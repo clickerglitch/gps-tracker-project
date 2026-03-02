@@ -32,7 +32,7 @@ function App() {
       try {
         // Sending data to Flask Backend
        // Inside your handleLogin function in App.js
-        const response = await axios.post('https://gps-backend-cg96.onrender.com/login', payload);
+const response = await axios.post('https://gps-backend-cg96.onrender.com/login', payload);
         alert("Login successful! Check your VS Code terminal for the meters.");
         console.log("Server Response:", response.data);
       } catch (error) {
@@ -72,4 +72,5 @@ function App() {
 
 
 export default App;
+
 
