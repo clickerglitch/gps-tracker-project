@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import math
+import sys # Import this
 
 app = Flask(__name__)
 # CORS configuration - Allows connections from everywhere
@@ -34,16 +35,17 @@ def process_tracking_data():
     y_meters = lat_rad * R
     x_meters = lon_rad * R * math.cos(lat_rad)
 
-    # --- OUTPUT TO RENDER LOGS ---
-    print("\n" + "═"*45)
-    print("         🚀 USER TRACKING DATA RECEIVED")
-    print("═"*45)
-    print(f"👤 USER    : {email}")
-    print(f"📱 MOBILE  : {mobile}")
-    print(f"📍 X-AXIS  : {x_meters:.2f} meters")
-    print(f"📍 Y-AXIS  : {y_meters:.2f} meters")
-    print(f"⛰️ ALTITUDE: {alt:.2f} meters")
-    print("═"*45 + "\n")
+    # --- OUTPUT TO RENDER LOGS WITH FLUSH=TRUE ---
+    # flush=True పెడితేనే Render Logs లో వెంటనే కనిపిస్తుంది
+    print("\n" + "═"*45, flush=True)
+    print("         🚀 USER TRACKING DATA RECEIVED", flush=True)
+    print("═"*45, flush=True)
+    print(f"👤 USER    : {email}", flush=True)
+    print(f"📱 MOBILE  : {mobile}", flush=True)
+    print(f"📍 X-AXIS  : {x_meters:.2f} meters", flush=True)
+    print(f"📍 Y-AXIS  : {y_meters:.2f} meters", flush=True)
+    print(f"⛰️ ALTITUDE: {alt:.2f} meters", flush=True)
+    print("═"*45 + "\n", flush=True)
 
     return jsonify({
         "status": "Success",
@@ -61,7 +63,6 @@ def login():
 # 2. SAFETY NET: Handle hits to the root URL (Fixes Mobile 404)
 @app.route('/', methods=['POST', 'OPTIONS'])
 def home_redirect():
-    # If mobile accidentally hits '/', it still runs the same logic
     return process_tracking_data()
 
 if __name__ == '__main__':
